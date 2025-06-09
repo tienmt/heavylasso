@@ -1,0 +1,48 @@
+---
+title: "Using the HeavyLasso Package"
+author: "Your Name"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using the HeavyLasso Package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+
+The **HeavyLasso** package implements robust linear regression with heavy-tailed errors modeled by a Student-\eqn{t} loss. It uses an EM-like algorithm with \eqn{\ell_1} penalization (lasso) for variable selection and robustness against outliers.
+
+# Functions
+
+- `heavylasso()`: Fit a heavy-tailed lasso regression model.
+- `select_lambda_ic()`: Select regularization parameter via AIC or BIC.
+- `coef()`: Extract model coefficients.
+- `predict()`: Predict responses on new data.
+
+# Usage Examples
+
+## Simulate Data with Heavy-Tailed Noise
+
+```r
+set.seed(123)
+n <- 100
+p <- 10
+X <- matrix(rnorm(n * p), n, p)
+beta_true <- c(1.5, -2, rep(0, p - 2))
+y <- X %*% beta_true + rt(n, df = 3)  # Student-t noise with 3 degrees of freedom
+
+library(heavylasso)
+fit <- heavylasso(X, y, lambda = 0.1, nu = 3, max_iter = 1000)
+print(fit$coefficients)
+
+# Select Optimal Lambda using AIC
+lambda_seq <- seq(0.05, 0.5, length.out = 10)
+result <- select_lambda_ic(X, y, lambda_seq = lambda_seq, criterion = "AIC")
+cat("Best lambda selected:", result$best_lambda, "\n")
+print(result$beta_cv)
+
+y_pred <- predict(fit, newdata = X)
+head(y_pred)
+
+```
