@@ -1,0 +1,23 @@
+Package: heavylasso
+Title: Heavy Lasso sparse regression under heavy-tailed noise via data-augmented soft-thresholding
+Version: 0.1.0
+Authors@R: 
+    person("The Tien", "Mai", , "the.tien.mai@fhi.no", role = c("aut", "cre"))
+Description: 
+    Fits robust sparse linear regression models under a heavy-tailed error or Outliers assumption 
+    using an Expectation-Maximization (EM)-like algorithm. The method make use of a Student-like robust
+    loss function and performs penalized estimation with an L1 (Lasso) penalty. 
+    Includes functions for model fitting, coefficient extraction, prediction, and automatic 
+    tuning of the regularization parameter via information criteria such as AIC or BIC.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+LinkingTo: 
+    Rcpp
+Imports: 
+    Rcpp
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
