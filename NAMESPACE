@@ -2,7 +2,10 @@
 
 S3method(coef,heavylasso)
 S3method(predict,heavylasso)
+export(cv_expLasso)
+export(cv_heavylasso)
 export(heavylasso)
 export(select_lambda_ic)
 importFrom(Rcpp,sourceCpp)
 useDynLib(heavylasso)
+useDynLib(heavylasso, .registration = TRUE)
