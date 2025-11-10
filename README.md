@@ -1,6 +1,4 @@
 
----
-
 ````markdown
 # **heavylasso: Sparse Penalized Regression under Heavy-Tailed Noise**
 
