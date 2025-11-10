@@ -81,7 +81,7 @@ beta_true[1:s0] <- c(rep(1, s0/2), rep(-1, s0/2))
 X1 <- matrix(rnorm(n * p), n, p)
 
 # Heavy-tailed response (Student-t noise)
-y1 <- X1 %*% beta_true + rt(n, df = 30)
+y1 <- X1 %*% beta_true + rt(n, df = 4)
 
 # Train/test split
 y <- y1[-(1:n_test), ]
