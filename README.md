@@ -55,19 +55,19 @@ The **Heavy Lasso** replaces the squared loss by a **Student-t–type loss**, de
 \[
 L_{\text{Heavy}}(\beta) = \frac{1}{2n} \sum_{i=1}^n \nu \log!\left(1 + \frac{(y_i - x_i^\top \beta)^2}{\nu}\right),
 \]
-where (\nu > 0) controls the heaviness of the tails.
+where \(\nu > 0\) controls the heaviness of the tails.
 
 The **Exponential Lasso** instead uses an **exponential loss**, providing a smooth, convex alternative:
 
-[
+\[
 L_{\text{Exp}}(\beta) = \frac{1}{n} \sum_{i=1}^n \frac{1}{\tau} \left( \exp!\left(\frac{(y_i - x_i^\top \beta)^2}{2\tau}\right) - 1 \right),
-]
+\]
 where (\tau > 0) controls sensitivity to large residuals.
 
 Both losses are combined with the L1-penalty to encourage sparsity:
-[
+\[
 \min_\beta L(\beta) + \lambda |\beta|_1.
-]
+\]
 
 ---
 
