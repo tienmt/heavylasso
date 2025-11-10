@@ -2,6 +2,22 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 coordinate_descent_update <- function(X, y, beta, w, r, lambda, active_set) {
-    .Call('_heavylasso_coordinate_descent_update', PACKAGE = 'heavylasso', X, y, beta, w, r, lambda, active_set)
+    .Call(`_heavylasso_coordinate_descent_update`, X, y, beta, w, r, lambda, active_set)
+}
+
+expLasso_opt <- function(X, y, lambda, tau = 0.1, max_iter = 400L, tol = 1e-4, beta_init = NULL, dynamic_active = TRUE) {
+    .Call(`_heavylasso_expLasso_opt`, X, y, lambda, tau, max_iter, tol, beta_init, dynamic_active)
+}
+
+cv_expLasso <- function(X, y, lambdas, nfolds = 5L, tau = 1.0, max_iter = 400L, tol = 1e-4) {
+    .Call(`_heavylasso_cv_expLasso`, X, y, lambdas, nfolds, tau, max_iter, tol)
+}
+
+heavylasso_opt <- function(X, y, lambda, nu = 3.0, max_iter = 400L, tol = 1e-4, beta_init = NULL, dynamic_active = TRUE) {
+    .Call(`_heavylasso_heavylasso_opt`, X, y, lambda, nu, max_iter, tol, beta_init, dynamic_active)
+}
+
+cv_heavylasso <- function(X, y, lambdas, nfolds = 5L, nu = 3.0, max_iter = 400L, tol = 1e-4) {
+    .Call(`_heavylasso_cv_heavylasso`, X, y, lambdas, nfolds, nu, max_iter, tol)
 }
 

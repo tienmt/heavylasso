@@ -12,6 +12,12 @@
 #' @param max_iter Maximum number of EM iterations (default: 2000).
 #' @param tol Convergence threshold based on mean squared difference of coefficients (default: 1e-11).
 #' @param beta_init Optional numeric vector of initial coefficient values. If \code{NULL}, initialized to zero.
+#' @author The Tien Mai (<the.tien.mai@fhi.no>)
+#'
+#' @references
+#' Mai, T. T. (2025). Heavy Lasso: sparse penalized regression under heavy-tailed noise via data-augmented soft-thresholding. arXiv preprint arXiv:2506.07790.
+#'
+#' Mai, T. T. (2025). Exponential Lasso: robust sparse penalization under heavy-tailed noise and outliers with exponential-type loss.
 #'
 #' @return A list with the following components:
 #' \describe{
@@ -95,6 +101,173 @@ heavylasso <- function(X, y, lambda, nu = 3, sigma2 = 1, max_iter = 2000, tol = 
 
 
 
+
+
+
+#' Cross-validation Heavy-tailed Lasso Regression: Student loss, also known as HeavyLasso
+#'
+#' Fits a robust linear regression model under a heavy-tailed error assumption
+#' using an EM-like algorithm. The model incorporates \eqn{\ell_1}-penalization
+#' (lasso) and assumes a Student-t distribution for the errors.
+#'
+#' @param X A numeric matrix of predictors of dimension \eqn{n \times p}.
+#' @param y A numeric response vector of length \eqn{n}.
+#' @param lambda Non-negative regularization parameter controlling sparsity.
+#' @param nu 	Robustness or temperature parameter (default: 3). The author recommend IQR(y)*4.
+#' @param sigma2 Fixed error variance, assumed known (default: 1).
+#' @param max_iter Maximum number of EM iterations (default: 2000).
+#' @param tol Convergence threshold based on mean squared difference of coefficients (default: 1e-11).
+#' @param beta_init Optional numeric vector of initial coefficient values. If \code{NULL}, initialized to zero.
+#'
+#' @author The Tien Mai (<the.tien.mai@fhi.no>)
+#'
+#' @references
+#' Mai, T. T. (2025). Heavy Lasso: sparse penalized regression under heavy-tailed noise via data-augmented soft-thresholding. arXiv preprint arXiv:2506.07790.
+#'
+#' Mai, T. T. (2025). Exponential Lasso: robust sparse penalization under heavy-tailed noise and outliers with exponential-type loss.
+#'
+#' @return A list with the following components:
+#' \describe{
+#'   \item{coefficients}{Estimated regression coefficients \eqn{\hat{\beta}}.}
+#'   \item{weights}{Observation-specific weights derived from the E-step.}
+#'   \item{iterations}{Number of iterations completed before convergence.}
+#' }
+#'
+#' @details
+#' This function solves the following penalized regression problem under heavy-tailed errors:
+#'
+#' \deqn{ \min_{\beta} \sum_{i=1}^{n} w_i (y_i - x_i^\top \beta)^2 + \lambda \|\beta\|_1, }
+#'
+#' where the weights \eqn{w_i} are updated in the E-step assuming a Student-\eqn{t} likelihood:
+#'
+#' \deqn{ w_i = \frac{\nu + 1}{\nu + r_i^2 / \sigma^2} / 2, }
+#'
+#' and \eqn{r_i = y_i - x_i^\top \beta} is the residual for observation \eqn{i}. This arises from
+#' modeling the errors with a scale-mixture of normals, which is equivalent to assuming:
+#'
+#' \deqn{ y_i = x_i^\top \beta + \epsilon_i, \quad \epsilon_i \sim t_\nu(0, \sigma^2). }
+#'
+#' The algorithm alternates between:
+#' \itemize{
+#'   \item \strong{E-step}: Update observation-specific weights \eqn{w_i}.
+#'   \item \strong{M-step}: Solve a weighted lasso problem via coordinate descent.
+#' }
+#'
+#' @section Algorithm:
+#' \enumerate{
+#'   \item Initialize \eqn{\beta^{(0)}}, set all weights \eqn{w_i = 1}.
+#'   \item Repeat until convergence or maximum iterations:
+#'     \enumerate{
+#'       \item E-step: Compute residuals and update weights as above.
+#'       \item M-step: Solve the weighted lasso problem using coordinate descent.
+#'       \item Check for convergence based on squared difference in coefficients.
+#'     }
+#' }
+#'
+#' @examples
+#' n_test = 10000
+#' n <- n_test + 100
+#' p <- 120
+#' s0 = 10
+#' beta_true <- rep(0, p) ;
+#' beta_true[1:s0] <- c( rep(1, s0/2) , rep(-1, s0/2) )
+#' X1 <- matrix(rnorm(n * p), n, p)
+#'
+#' y1 <- X1 %*% beta_true + rt(n, df = 30)
+#' # rnorm(n,sd=3)  # rnorm(n)  # rcauchy(n) # rt(n, df = 3) #
+#'
+#' y = y1[-(1:n_test),]
+#' X = X1[-(1:n_test),]
+#' ytest = y1[ 1:n_test,] ;
+#' xtest = X1[1:n_test,]
+#'
+#' cv.heavylasso1 <- cv_heavylasso(X, y, nu = IQR(y)*3,lambdas = 1:50 )
+#' b_heavyt2 <- cv.heavylasso1$beta_best
+#' cv.explasso1 <- cv_expLasso(X, y, tau = 0.1, lambda = 1:50 )
+#' b_explasso <- cv.explasso1$beta_best
+#'
+#' sum( (b_explasso - beta_true)^2)
+#' sum( (b_heavyt2 - beta_true)^2)
+#'
+#' @seealso \code{\link{select_lambda_ic}} for automated lambda selection.
+#'
+#' @export
+#' @useDynLib heavylasso
+#' @importFrom Rcpp sourceCpp
+#' @name cv_heavylasso
+NULL
+
+
+
+
+
+#' Cross-validated Exponential Lasso (C++ implementation)
+#'
+#' Performs K-fold cross-validation for the exponential Lasso regression model,
+#' implemented efficiently in C++ using Rcpp and Armadillo.
+#'
+#' @param X Numeric matrix of predictors (\eqn{n \times p}).
+#' @param y Numeric response vector of length \eqn{n}.
+#' @param lambdas Numeric vector of regularization parameters to evaluate.
+#' @param nfolds Integer, number of cross-validation folds (default: 5).
+#' @param tau Robustness or temperature parameter (default: 1).
+#' @param max_iter Integer, maximum number of iterations (default: 400).
+#' @param tol Numeric tolerance for convergence (default: 1e-4).
+#' @author The Tien Mai (<the.tien.mai@fhi.no>)
+#'
+#' @references
+#' Mai, T. T. (2025). Heavy Lasso: sparse penalized regression under heavy-tailed noise via data-augmented soft-thresholding. arXiv preprint arXiv:2506.07790.
+#'
+#' Mai, T. T. (2025). Exponential Lasso: robust sparse penalization under heavy-tailed noise and outliers with exponential-type loss.
+#' @return A list with components:
+#' \describe{
+#'   \item{lambda_best}{The value of \code{lambda} giving the best cross-validation performance.}
+#'   \item{beta_best}{Estimated coefficient vector at \code{lambda_best}.}
+#'   \item{cv_errors}{Cross-validation error values for each lambda.}
+#' }
+#'
+#' @details
+#' This function calls the C++ routine \code{_heavylasso_cv_expLasso} via \code{.Call()},
+#' which implements a robust coordinate descent algorithm for heavy-tailed Lasso regression.
+#'
+#' @examples
+#' n_test = 10000
+#' n <- n_test + 100
+#' p <- 120
+#' s0 = 10
+#' beta_true <- rep(0, p) ;
+#' beta_true[1:s0] <- c( rep(1, s0/2) , rep(-1, s0/2) )
+#' X1 <- matrix(rnorm(n * p), n, p)
+#'
+#' y1 <- X1 %*% beta_true + rt(n, df = 30)
+#' # rnorm(n,sd=3)  # rnorm(n)  # rcauchy(n) # rt(n, df = 3)
+#'
+#' y = y1[-(1:n_test),]
+#' X = X1[-(1:n_test),]
+#' ytest = y1[ 1:n_test,] ;
+#' xtest = X1[1:n_test,]
+#'
+#' cv.heavylasso1 <- cv_heavylasso(X, y, nu = IQR(y)*3,lambdas = 1:50 )
+#' b_heavyt2 <- cv.heavylasso1$beta_best
+#' cv.explasso1 <- cv_expLasso(X, y, tau = 0.1, lambda = 1:50 )
+#' b_explasso <- cv.explasso1$beta_best
+#'
+#' sum( (b_explasso - beta_true)^2)
+#' sum( (b_heavyt2 - beta_true)^2)
+#'
+#' @seealso \code{\link{heavylasso}} for the main fitting function.
+#'
+#' @useDynLib heavylasso, .registration = TRUE
+#' @export
+#' @name cv_expLasso
+NULL
+
+
+
+
+
+
+
 #' Select Regularization Parameter via Information Criterion
 #'
 #' Chooses the optimal lasso penalty parameter \code{lambda} based on AIC or BIC
@@ -105,6 +278,11 @@ heavylasso <- function(X, y, lambda, nu = 3, sigma2 = 1, max_iter = 2000, tol = 
 #' @param lambda_seq A vector of candidate lambda values to evaluate (default: 1:15).
 #' @param criterion Information criterion to use for selection: \code{"AIC"} or \code{"BIC"}.
 #' @param ... Additional arguments passed to \code{\link{heavylasso}}.
+#' @author The Tien Mai (<the.tien.mai@fhi.no>)
+#' @references
+#' Mai, T. T. (2025). Heavy Lasso: sparse penalized regression under heavy-tailed noise via data-augmented soft-thresholding. arXiv preprint arXiv:2506.07790.
+#'
+#' Mai, T. T. (2025). Exponential Lasso: robust sparse penalization under heavy-tailed noise and outliers with exponential-type loss.
 #'
 #' @return A list with the following elements:
 #' \describe{
@@ -195,6 +373,12 @@ select_lambda_ic <- function(X, y, lambda_seq = 1:50,
 #'
 #' @param object An object of class \code{"heavylasso"}, typically returned by \code{\link{heavylasso}}.
 #' @param ... Additional arguments (ignored).
+#' @author The Tien Mai (<the.tien.mai@fhi.no>)
+#'
+#' @references
+#' Mai, T. T. (2025). Heavy Lasso: sparse penalized regression under heavy-tailed noise via data-augmented soft-thresholding. arXiv preprint arXiv:2506.07790.
+#'
+#' Mai, T. T. (2025). Exponential Lasso: robust sparse penalization under heavy-tailed noise and outliers with exponential-type loss.
 #'
 #' @return A numeric vector of estimated regression coefficients.
 #' @export
@@ -215,6 +399,11 @@ coef.heavylasso <- function(object, ...) {
 #' @param object An object of class \code{"heavylasso"}.
 #' @param newdata A numeric matrix or data frame with the same number of columns as the training data.
 #' @param ... Additional arguments (currently unused).
+#' @author The Tien Mai (<the.tien.mai@fhi.no>)
+#' @references
+#' Mai, T. T. (2025). Heavy Lasso: sparse penalized regression under heavy-tailed noise via data-augmented soft-thresholding. arXiv preprint arXiv:2506.07790.
+#'
+#' Mai, T. T. (2025). Exponential Lasso: robust sparse penalization under heavy-tailed noise and outliers with exponential-type loss.
 #'
 #' @return A numeric vector of predicted values.
 #' @export
