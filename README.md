@@ -2,10 +2,14 @@
 # **heavylasso: Sparse Penalized Regression under Heavy-Tailed Noise**
 
 The **heavylasso** package provides robust and efficient algorithms for sparse regression in the presence of heavy-tailed or non-Gaussian noise.  
-It implements both the **Heavy Lasso** (based on a Student-t–type loss) and the **Exponential Lasso**, enabling users to perform regularized estimation under various robustness settings.
+It implements both the **Heavy Lasso** (based on a Student-t–type loss) 
+and the **Exponential Lasso**, enabling users to perform regularized estimation under various robustness settings.
 
 The Heavy Lasso method is inspired by:  
-> **"Heavy Lasso: Sparse Penalized Regression under Heavy-Tailed Noise via Data-Augmented Soft-Thresholding."**
+> **"Mai T.T. (2025). Heavy Lasso: Sparse Penalized Regression under Heavy-Tailed Noise via Data-Augmented Soft-Thresholding."**
+
+The Exponential Lasso method is inspired by:  
+> **"Mai T.T. (2025). Exponential Lasso: robust sparse penalization under heavy-tailed noise and outliers with exponential-type loss."**
 
 It combines coordinate descent with adaptive weighting derived from a Student-type loss, providing robustness against outliers and heavy-tailed residuals.
 
