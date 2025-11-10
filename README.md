@@ -43,35 +43,6 @@ The package implements two key estimators:
 
 Both methods include efficient coordinate descent solvers and cross-validation routines for tuning parameter selection.
 
----
-
-## **Theoretical Background**
-
-The standard Lasso solves the optimization problem
-
-\[
-\min_\beta \frac{1}{2n} \sum_{i=1}^n (y_i - x_i^\top \beta)^2 + \lambda |\beta|_1.
-\]
-
-However, when the noise distribution is heavy-tailed, the quadratic loss becomes unstable.
-The **Heavy Lasso** replaces the squared loss by a **Student-t–type loss**, derived from the log-likelihood of a Student-t model:
-
-\[
-L_{\text{Heavy}}(\beta) = \frac{1}{2n} \sum_{i=1}^n \nu \log \left(1 + \frac{(y_i - x_i^\top \beta)^2}{\nu}\right),
-\]
-where '\nu > 0' controls the heaviness of the tails.
-
-The **Exponential Lasso** instead uses an **exponential loss**, providing a smooth, convex alternative:
-
-\[
-L_{\text{Exp}}(\beta) = \frac{1}{n} \sum_{i=1}^n \frac{1}{\tau} \left( \exp!\left(\frac{(y_i - x_i^\top \beta)^2}{2\tau}\right) - 1 \right),
-\]
-where (\tau > 0) controls sensitivity to large residuals.
-
-Both losses are combined with the L1-penalty to encourage sparsity:
-\[
-\min_\beta L(\beta) + \lambda |\beta|_1.
-\]
 
 ---
 
@@ -151,4 +122,33 @@ cat("MSE (Heavy Lasso):", sum((b_heavyt - beta_true)^2), "\n")
 ```
 
 ---
+
+## **Theoretical Background**
+
+The standard Lasso solves the optimization problem
+
+\[
+\min_\beta \frac{1}{2n} \sum_{i=1}^n (y_i - x_i^\top \beta)^2 + \lambda |\beta|_1.
+\]
+
+However, when the noise distribution is heavy-tailed, the quadratic loss becomes unstable.
+The **Heavy Lasso** replaces the squared loss by a **Student-t–type loss**, derived from the log-likelihood of a Student-t model:
+
+\[
+L_{\text{Heavy}}(\beta) = \frac{1}{2n} \sum_{i=1}^n \nu \log \left(1 + \frac{(y_i - x_i^\top \beta)^2}{\nu}\right),
+\]
+where '\nu > 0' controls the heaviness of the tails.
+
+The **Exponential Lasso** instead uses an **exponential loss**, providing a smooth, convex alternative:
+
+\[
+L_{\text{Exp}}(\beta) = \frac{1}{n} \sum_{i=1}^n \frac{1}{\tau} \left( \exp!\left(\frac{(y_i - x_i^\top \beta)^2}{2\tau}\right) - 1 \right),
+\]
+where (\tau > 0) controls sensitivity to large residuals.
+
+Both losses are combined with the L1-penalty to encourage sparsity:
+\[
+\min_\beta L(\beta) + \lambda |\beta|_1.
+\]
+
 
