@@ -11,3 +11,15 @@ bibentry(
   pages = "",
   doi = "10.48550/arXiv.2506.07790"
 )
+
+bibentry(
+  bibtype = "Article",
+  title = "xponential Lasso: robust sparse penalization under heavy-tailed noise and outliers with exponential-type loss",
+  author = "The Tien Mai",
+  journal = " ",
+  year = "2025",
+  volume = "",
+  number = "",
+  pages = "",
+  doi = " "
+)
