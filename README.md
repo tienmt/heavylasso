@@ -1,5 +1,5 @@
 
-# **heavylasso: Sparse Penalized Regression under Heavy-Tailed Noise**
+# **heavylasso: Sparse penalized regression under Heavy-tailed Noise and Outliers**
 
 The **heavylasso** package provides robust and efficient algorithms for sparse regression in the presence of heavy-tailed or non-Gaussian noise.  
 It implements both the **Heavy Lasso** (based on a Student-t–type loss) 
