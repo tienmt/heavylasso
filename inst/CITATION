@@ -14,7 +14,7 @@ bibentry(
 
 bibentry(
   bibtype = "Article",
-  title = "xponential Lasso: robust sparse penalization under heavy-tailed noise and outliers with exponential-type loss",
+  title = "Exponential Lasso: robust sparse penalization under heavy-tailed noise and outliers with exponential-type loss",
   author = "The Tien Mai",
   journal = "arXiv",
   year = "2025",
