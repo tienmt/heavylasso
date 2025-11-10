@@ -27,9 +27,83 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// expLasso_opt
+List expLasso_opt(const NumericMatrix& X, const NumericVector& y, double lambda, double tau, int max_iter, double tol, Nullable<NumericVector> beta_init, bool dynamic_active);
+RcppExport SEXP _heavylasso_expLasso_opt(SEXP XSEXP, SEXP ySEXP, SEXP lambdaSEXP, SEXP tauSEXP, SEXP max_iterSEXP, SEXP tolSEXP, SEXP beta_initSEXP, SEXP dynamic_activeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< double >::type tau(tauSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< Nullable<NumericVector> >::type beta_init(beta_initSEXP);
+    Rcpp::traits::input_parameter< bool >::type dynamic_active(dynamic_activeSEXP);
+    rcpp_result_gen = Rcpp::wrap(expLasso_opt(X, y, lambda, tau, max_iter, tol, beta_init, dynamic_active));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cv_expLasso
+List cv_expLasso(NumericMatrix X, NumericVector y, NumericVector lambdas, int nfolds, double tau, int max_iter, double tol);
+RcppExport SEXP _heavylasso_cv_expLasso(SEXP XSEXP, SEXP ySEXP, SEXP lambdasSEXP, SEXP nfoldsSEXP, SEXP tauSEXP, SEXP max_iterSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type lambdas(lambdasSEXP);
+    Rcpp::traits::input_parameter< int >::type nfolds(nfoldsSEXP);
+    Rcpp::traits::input_parameter< double >::type tau(tauSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(cv_expLasso(X, y, lambdas, nfolds, tau, max_iter, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// heavylasso_opt
+List heavylasso_opt(const NumericMatrix& X, const NumericVector& y, double lambda, double nu, int max_iter, double tol, Nullable<NumericVector> beta_init, bool dynamic_active);
+RcppExport SEXP _heavylasso_heavylasso_opt(SEXP XSEXP, SEXP ySEXP, SEXP lambdaSEXP, SEXP nuSEXP, SEXP max_iterSEXP, SEXP tolSEXP, SEXP beta_initSEXP, SEXP dynamic_activeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< double >::type nu(nuSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< Nullable<NumericVector> >::type beta_init(beta_initSEXP);
+    Rcpp::traits::input_parameter< bool >::type dynamic_active(dynamic_activeSEXP);
+    rcpp_result_gen = Rcpp::wrap(heavylasso_opt(X, y, lambda, nu, max_iter, tol, beta_init, dynamic_active));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cv_heavylasso
+List cv_heavylasso(NumericMatrix X, NumericVector y, NumericVector lambdas, int nfolds, double nu, int max_iter, double tol);
+RcppExport SEXP _heavylasso_cv_heavylasso(SEXP XSEXP, SEXP ySEXP, SEXP lambdasSEXP, SEXP nfoldsSEXP, SEXP nuSEXP, SEXP max_iterSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type lambdas(lambdasSEXP);
+    Rcpp::traits::input_parameter< int >::type nfolds(nfoldsSEXP);
+    Rcpp::traits::input_parameter< double >::type nu(nuSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(cv_heavylasso(X, y, lambdas, nfolds, nu, max_iter, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_heavylasso_coordinate_descent_update", (DL_FUNC) &_heavylasso_coordinate_descent_update, 7},
+    {"_heavylasso_expLasso_opt", (DL_FUNC) &_heavylasso_expLasso_opt, 8},
+    {"_heavylasso_cv_expLasso", (DL_FUNC) &_heavylasso_cv_expLasso, 7},
+    {"_heavylasso_heavylasso_opt", (DL_FUNC) &_heavylasso_heavylasso_opt, 8},
+    {"_heavylasso_cv_heavylasso", (DL_FUNC) &_heavylasso_cv_heavylasso, 7},
     {NULL, NULL, 0}
 };
 
