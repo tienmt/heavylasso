@@ -55,3 +55,11 @@ result <- select_lambda_ic(X, y, lambda_seq = seq(5, 0.1, length.out = 10))
 result$best_lambda
 result$beta_cv
 }
+\references{
+Mai, T. T. (2025). Heavy Lasso: sparse penalized regression under heavy-tailed noise via data-augmented soft-thresholding. arXiv preprint arXiv:2506.07790.
+
+Mai, T. T. (2025). Exponential Lasso: robust sparse penalization under heavy-tailed noise and outliers with exponential-type loss.
+}
+\author{
+The Tien Mai (\href{mailto:the.tien.mai@fhi.no}{the.tien.mai@fhi.no})
+}
