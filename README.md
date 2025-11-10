@@ -1,4 +1,3 @@
-Perfect — here’s a full, **copy-paste–ready README.md** for your GitHub repository, including installation, examples, and a concise *Theoretical Background* section suitable for both users and reviewers (with proper Markdown formatting).
 
 ---
 
