@@ -8,7 +8,7 @@ and the **Exponential Lasso**, enabling users to perform regularized estimation 
 The Heavy Lasso method is inspired by:  
 > **"Mai T.T. (2025). Heavy Lasso: Sparse Penalized Regression under Heavy-Tailed Noise via Data-Augmented Soft-Thresholding."**
 
-The Exponential Lasso method is inspired by:  
+The **Exponential Lasso** method is inspired by:  
 > **"Mai T.T. (2025). Exponential Lasso: robust sparse penalization under heavy-tailed noise and outliers with exponential-type loss."**
 
 It combines coordinate descent with adaptive weighting derived from a Student-type loss, providing robustness against outliers and heavy-tailed residuals.
