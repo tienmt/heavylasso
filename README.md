@@ -119,7 +119,7 @@ cat("MSE (Heavy Lasso):", sum((b_heavyt - beta_true)^2), "\n")
 * Hastie, T., Tibshirani, R., & Friedman, J. (2009). *The Elements of Statistical Learning*. Springer.
 * Mai, T. T. (2025). *Heavy Lasso: Sparse Penalized Regression under Heavy-Tailed Noise via Data-Augmented Soft-Thresholding.* (Working paper)
 
-```
+
 
 
 
