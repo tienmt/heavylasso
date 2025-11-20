@@ -121,15 +121,15 @@ cat("MSE (Heavy Lasso):", sum((b_heavyt - beta_true)^2), "\n")
 
 ```
 
----
+
 
 ## **Theoretical Background**
 
 The standard Lasso solves the optimization problem
 
-\[
+$
 \min_\beta \frac{1}{2n} \sum_{i=1}^n (y_i - x_i^\top \beta)^2 + \lambda |\beta|_1.
-\]
+$
 
 However, when the noise distribution is heavy-tailed, the quadratic loss becomes unstable.
 The **Heavy Lasso** replaces the squared loss by a **Student-t–type loss**, derived from the log-likelihood of a Student-t model:
