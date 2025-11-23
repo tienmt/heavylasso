@@ -17,7 +17,7 @@ RoxygenNote: 7.3.2
 LinkingTo: 
     Rcpp
 Imports: 
-    Rcpp
+    Rcpp, RcppArmadillo
 Suggests: 
     knitr,
     rmarkdown
