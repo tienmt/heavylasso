@@ -117,7 +117,7 @@ cat("MSE (Heavy Lasso):", sum((b_heavyt - beta_true)^2), "\n")
 
 * Donoho, D. L., & Johnstone, I. M. (1994). *Ideal spatial adaptation by wavelet shrinkage*. **Biometrika**, 81(3), 425–455.
 * Hastie, T., Tibshirani, R., & Friedman, J. (2009). *The Elements of Statistical Learning*. Springer.
-* Mai, T. T. (2025). *Heavy Lasso: Sparse Penalized Regression under Heavy-Tailed Noise via Data-Augmented Soft-Thresholding.* (Working paper)
+* Mai, T. T. (2025). *Heavy Lasso: Sparse Penalized Regression under Heavy-Tailed Noise via Data-Augmented Soft-Thresholding.* **Statistics and Computing** 36.(1):29
 
 
 
